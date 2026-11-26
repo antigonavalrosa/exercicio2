@@ -1,0 +1,10 @@
+Quando uma requisição POST /livros chega ao servidor, o Express (na pasta server) usa o express.json() para 
+ler o JSON do corpo da requisição e, pela rota definida no server.js, envia a requisição para a função 
+cadastrar do controller. O controller pega os dados em req.body e confere se titulo, autor, ano_publicacao e 
+data_cadastro foram enviados. Se faltar algum, ele já responde com status 400 e uma mensagem dizendo o que 
+falta, e nada é gravado no banco. Se estiver tudo certo, o controller chama a função cadastrar do model, 
+passando os dados do livro. O model, que é a única parte com SQL, usa a conexão com o MySQL e executa o 
+INSERT com parâmetros (?), sem juntar texto no comando. O MySQL grava o livro, gera o id automaticamente e 
+devolve esse id para o model, que o devolve ao controller. Por fim, o controller monta a resposta com status 
+201 e o id do novo livro em JSON. Se acontecer algum erro de comunicação com o banco, o catch do controller 
+responde com status 500 e uma mensagem de erro.
